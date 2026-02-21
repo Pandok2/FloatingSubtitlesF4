@@ -1,0 +1,38 @@
+name: Nightly OG Build
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Setup MSVC
+      uses: ilammy/msvc-dev-cmd@v1
+
+    - name: Setup CMake
+      uses: lukka/get-cmake@latest
+
+    - name: Setup vcpkg
+      uses: lukka/run-vcpkg@v11
+
+    - name: Install Dependencies
+      run: |
+        vcpkg install commonlibf4:x64-windows
+
+    - name: Configure
+      run: cmake -B build
+
+    - name: Build
+      run: cmake --build build --config Release
+
+    - name: Upload Artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: FloatingSubtitlesF4-OG
+        path: build/Release/FloatingSubtitlesF4.dll
