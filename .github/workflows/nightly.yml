@@ -23,7 +23,8 @@ jobs:
 
     - name: Install Dependencies
       run: |
-        vcpkg install commonlibf4:x64-windows
+       git clone https://github.com/Ryan-rsm-McKenzie/CommonLibF4.git extern/CommonLibF4
+       vcpkg install fmt:x64-windows
 
     - name: Configure
       run: cmake -B build
